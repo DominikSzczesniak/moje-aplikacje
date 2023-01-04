@@ -37,4 +37,22 @@ public class RetributionCharges {
     public int hashCode() {
         return Objects.hash(value);
     }
+
+    public int getValue() {
+        return value;
+    }
+
+    public boolean twoCostAbility(){
+        int checking = new RetributionCharges(value).getValue();
+        if (checking >= 2)
+            return true;
+        return false;
+    }
+
+    public boolean threeCostAbility(){
+        int checking = new RetributionCharges(value).getValue();
+        if (checking >= 3)
+            return true;
+        return false;
+    }
 }

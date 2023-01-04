@@ -11,22 +11,42 @@ public class Frost extends WowCharacter{
     static int brainFreezeCount = 0;
     static int iceLanceCount = 0;
     static int flurryCount = 0;
+
+//    private int duration = 0;
+//
+//    private void durationTime(){
+//        int time = getDuration();
+//        int second = time % 60;
+//        int minute = time / 60;
+//        System.out.print(minute + ":" + second);
+//    }
+//
+//    public int getDuration() {
+//        return duration;
+//    }
+
     Random rnd = new Random();
     public void castFrostbolt(){
+        duration += 2;
+        durationTime();
+        System.out.println("  Frostbolt");
         frostboltCount++;
-        System.out.println("Frostbolt");
-        sleep(2);
+        //sleep(2);
     }
     public void castIceLance(){
-        System.out.println("Ice lance");
+        duration += 1;
+        durationTime();
+        System.out.println("  Ice lance");
         iceLanceCount++;
-        sleep(1);
+        //sleep(1);
     }
 
     public void castFlurry(){
-        System.out.println("Flurry");
+        duration += 1;
+        durationTime();
+        System.out.println("  Flurry");
         flurryCount++;
-        sleep(1);
+        //sleep(1);
     }
 
     private void sleep(int numberOfSeconds){
@@ -39,29 +59,30 @@ public class Frost extends WowCharacter{
 
 
     @Override
-    public void rotation(){
-        castFrostbolt();
-        int procChanceBF = rnd.nextInt(101);
-        int procChanceFOF = rnd.nextInt(101);
-        if (procChanceBF >= 70 && procChanceFOF >= 85){
-            System.out.println("**BRAIN FREEZE AND FINGERS OF FROST**");
-            castIceLance();
-            castFlurry();
-            castIceLance();
-            castIceLance();
-            brainFreezeCount++;
+    public void rotation(int duration){
+        while (this.duration <= duration) {
+            castFrostbolt();
+            int procChanceBF = rnd.nextInt(101);
+            int procChanceFOF = rnd.nextInt(101);
+            if (procChanceBF >= 70 && procChanceFOF >= 85) {
+                System.out.println("**BRAIN FREEZE AND FINGERS OF FROST**");
+                castIceLance();
+                castFlurry();
+                castIceLance();
+                castIceLance();
+                brainFreezeCount++;
+            } else if (procChanceBF >= 70) {
+                System.out.println("**BRAIN FREEZE**");
+                castFlurry();
+                castIceLance();
+                castIceLance();
+                brainFreezeCount++;
+            } else if (procChanceFOF >= 85) {
+                System.out.println("**FINGERS OF FROST**");
+                castIceLance();
+            }
         }
-        else if (procChanceBF >= 70){
-            System.out.println("**BRAIN FREEZE**");
-            castFlurry();
-            castIceLance();
-            castIceLance();
-            brainFreezeCount++;
-        }
-        else if (procChanceFOF >= 85){
-            System.out.println("**FINGERS OF FROST**");
-            castIceLance();
-        }
+        System.out.println("Duration of combat: " + this.duration);
     }
 
 
@@ -82,6 +103,15 @@ public class Frost extends WowCharacter{
     public static int getFlurryCount() {
         System.out.print("Flurry count:");
         return flurryCount;
+    }
+
+    public void frostRotationSummary(){
+        System.out.println("------------------------------------------------------------");
+        System.out.println("Summary:");
+        System.out.println(" " + Frost.getFrostboltCount());
+        System.out.println("Brain freeze count: " + Frost.getBrainFreezeCount());
+        System.out.println(" " + Frost.getFlurryCount());
+        System.out.println(" " + Frost.getIceLanceCount());
     }
 
 //    public boolean brainFreezeProc(){

@@ -1,9 +1,10 @@
 package consoleapp;
 
-import java.util.Objects;
-
 public class Retribution extends WowCharacter {
-    RetributionCharges retributionCharges;      // DODALEM TUTAJ TO
+    RetributionCharges retributionCharges;
+    static int bladeOfJusticeCount = 0;
+    private int lastTimeUsedBOJ;
+    private int lastTimeUsedDS;
 
     public Retribution(String nickname, String race, String class1, String spec, RetributionCharges retributionCharges) {
         super(nickname, race, class1, spec);
@@ -12,32 +13,68 @@ public class Retribution extends WowCharacter {
 
 
     public void crusaderStrike() {
-        //System.out.println(new RetributionCharges(0).add(new RetributionCharges(1))
-        System.out.println("used crusader strike");
+        durationTime();
+        System.out.println(" used Crusader Strike");
         retributionCharges = retributionCharges.add(new RetributionCharges(1));
+        duration += 1;
+    }
+
+    public void bladeOfJusticeActions() {
+        if (bladeOfJusticeCount < 1 || duration - lastTimeUsedBOJ >= 8) {
+            durationTime();
+            System.out.println(" used Blade of Justice");
+            retributionCharges = retributionCharges.add(new RetributionCharges(2));
+            bladeOfJusticeCount++;
+            lastTimeUsedBOJ = duration;
+            duration += 1;
+        } else {
+            durationTime();
+            System.out.println(" Blade of Justice is on cooldown - " + (8 - (duration - lastTimeUsedBOJ)) + " more seconds remaining");
+        }
     }
 
     public void bladeOfJustice() {
-
+        if (bladeOfJusticeCount < 1 || duration - lastTimeUsedBOJ >= 8)
+            bladeOfJusticeActions();
     }
 
     public void templarVerdict() {
-        if (retributionCharges.equals(new RetributionCharges(2)) || retributionCharges.equals(new RetributionCharges(3)) || // NOWA METODA NA SPRAWDZENIE LEPIEJ ALE CZY NAJLEPIEJ?
-                retributionCharges.equals(new RetributionCharges(4)) || retributionCharges.equals(new RetributionCharges(5))) {  // MOZE GETTERA ZROBIC NA VALUE I WTEDY POROWNYWAC 2 INTY???
-            System.out.println("used templar's verdict");
-            retributionCharges = retributionCharges.substract(new RetributionCharges(2));  // TUTAJ ZAMIAST NOWY OBIEKT TO ZROBIC WCZESNIEJ JAKIS NP TEMPLARSVERDICT// MOZE ENUM???
-        }
-        else System.out.println("couldn't use templar's verdict - not enough charges");
+        if (retributionCharges.twoCostAbility()) {
+            durationTime();
+            System.out.println(" used Templar's Verdict");
+            retributionCharges = retributionCharges.substract(new RetributionCharges(2));
+            duration += 1;
+        } else System.out.println(" couldn't use templar's verdict - not enough charges");
     }
 
     public void divineStorm() {
-
+        if (retributionCharges.threeCostAbility()) {
+        durationTime();
+        System.out.println(" used Divine Storm");
+        retributionCharges = retributionCharges.substract(new RetributionCharges(3));
+        lastTimeUsedDS = duration;
+        duration += 1;
+        }
+//        else if (!retributionCharges.threeCostAbility())
+//            System.out.println("couldn't use divine storm - not enough charges");
+//        else
+//            System.out.println("Divine Storm is on cooldown - " + (6 - (duration - lastTimeUsedDS)) + " more seconds remaining");
     }
-
 
     @Override
-    public void rotation() {
-        crusaderStrike();
+    public void rotation(int duration) {
+        while (this.duration <= duration) {
+            bladeOfJustice();
+            while (!retributionCharges.threeCostAbility() && (this.duration - lastTimeUsedDS >= 6 || lastTimeUsedDS == 0)) {
+                bladeOfJustice();
+                crusaderStrike();
+                divineStorm();
+            }
+            if (retributionCharges.twoCostAbility())
+                templarVerdict();
+            crusaderStrike();
+        }
     }
-
 }
+
+
