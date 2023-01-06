@@ -25,18 +25,18 @@ public class RetributionCharges {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RetributionCharges that = (RetributionCharges) o;
-        return value == that.value;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        RetributionCharges that = (RetributionCharges) o;
+//        return value == that.value;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(value);
+//    }
 
     public int getValue() {
         return value;

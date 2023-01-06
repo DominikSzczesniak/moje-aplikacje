@@ -39,12 +39,12 @@ public class Retribution extends WowCharacter {
     }
 
     public void templarVerdict() {
-        if (retributionCharges.twoCostAbility()) {
+        //if (retributionCharges.twoCostAbility()) {
             durationTime();
             System.out.println(" used Templar's Verdict");
             retributionCharges = retributionCharges.substract(new RetributionCharges(2));
             duration += 1;
-        } else System.out.println(" couldn't use templar's verdict - not enough charges");
+        //} else System.out.println(" couldn't use templar's verdict - not enough charges");
     }
 
     public void divineStorm() {
