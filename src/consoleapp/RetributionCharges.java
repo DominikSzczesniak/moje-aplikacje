@@ -1,9 +1,7 @@
 package consoleapp;
 
-import java.util.Objects;
-
 public class RetributionCharges {
-    private final int value;
+    private int value;
     RetributionCharges(int value){
         if (value < 0 || value > 5){
             throw new IllegalArgumentException("Retribution charges can only be created with values 0-5 but provided: " + value);
@@ -24,22 +22,12 @@ public class RetributionCharges {
                 "value=" + value +
                 '}';
     }
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        RetributionCharges that = (RetributionCharges) o;
-//        return value == that.value;
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(value);
-//    }
-
     public int getValue() {
         return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
     public boolean twoCostAbility(){
