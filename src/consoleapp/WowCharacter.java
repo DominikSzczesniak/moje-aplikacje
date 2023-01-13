@@ -16,9 +16,10 @@ public abstract class WowCharacter {
     }
     public void durationTime(){
         int time = duration;
-        int second = time % 60;
-        int minute = time / 60;
-        System.out.print(minute + ":" + second);
+        int seconds = time % 60;
+        int minutes = time / 60;
+        String str = String.format("%d:%02d", minutes, seconds);
+        System.out.print(str);
     }
 
     public abstract void rotation(int seconds);
